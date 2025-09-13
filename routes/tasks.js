@@ -55,6 +55,46 @@ router.post("/", protect, async (req, res) => {
   }
 });
 
+//Get single task by ID
+router.get("/:id", protect, async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    if (task.user.toString() != req.user._id.toString()) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to view this task",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: task,
+    });
+  } catch (error) {
+    console.error("Get task error:", error);
+
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid task ID format",
+      });
+    }
+
+    res.status(500).json({
+      succes: false,
+      message: "Server error while fetching task",
+    });
+  }
+});
+
 // Update a task
 router.put("/:id", protect, async (req, res) => {
   try {
