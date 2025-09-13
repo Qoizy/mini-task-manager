@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on initial load
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
 
@@ -32,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         {
           email,
           password,
@@ -41,7 +40,6 @@ export const AuthProvider = ({ children }) => {
 
       const { token, user } = response.data;
 
-      // Set token in localStorage and axios headers
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -60,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
         {
           name,
           email,
@@ -70,7 +68,6 @@ export const AuthProvider = ({ children }) => {
 
       const { token, user } = response.data;
 
-      // Set token in localStorage and axios headers
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

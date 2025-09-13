@@ -18,18 +18,28 @@ const PORT = process.env.PORT || 5000;
 // Connect to database
 connectDB();
 
+// const corsOptions = {
+//   //   origin: function (origin, callback) {
+//   //     if (!origin) return callback(null, true);
+
+//   //     const allowedOrigins = [process.env.FRONTEND_URL, "https://localhost:3000"];
+
+//   //     if (allowedOrigins.indexOf(origin) !== -1) {
+//   //       callback(null, true);
+//   //     } else {
+//   //       callback(new Error("Not allowed by CORS"));
+//   //     }
+//   //   },
+//   credentials: true,
+//   optionsSuccessStatus: 200,
+// };
+
 const corsOptions = {
-  //   origin: function (origin, callback) {
-  //     if (!origin) return callback(null, true);
-
-  //     const allowedOrigins = [process.env.FRONTEND_URL, "https://localhost:3000"];
-
-  //     if (allowedOrigins.indexOf(origin) !== -1) {
-  //       callback(null, true);
-  //     } else {
-  //       callback(new Error("Not allowed by CORS"));
-  //     }
-  //   },
+  origin: [
+    "https://mini-task-manager-phi.vercel.app",
+    "http://localhost:3000",
+    "https://localhost:3000",
+  ],
   credentials: true,
   optionsSuccessStatus: 200,
 };
