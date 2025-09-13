@@ -19,20 +19,17 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
+  //   origin: function (origin, callback) {
+  //     if (!origin) return callback(null, true);
 
-    const allowedOrigins = [
-      process.env.FRONTEND_URL,
-      "http://localhost:3000", // Changed from https to http
-    ];
+  //     const allowedOrigins = [process.env.FRONTEND_URL, "https://localhost:3000"];
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  //     if (allowedOrigins.indexOf(origin) !== -1) {
+  //       callback(null, true);
+  //     } else {
+  //       callback(new Error("Not allowed by CORS"));
+  //     }
+  //   },
   credentials: true,
   optionsSuccessStatus: 200,
 };
