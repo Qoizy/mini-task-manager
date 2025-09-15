@@ -5,22 +5,43 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/app/utils/auth";
 import Layout from "../components/Layout";
+import Spinner from "../components/Spinner";
 import api from "../utils/axios";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All");
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const [tasksLoading, setTasksLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-      return;
+    if (!authLoading) {
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+      fetchTasks();
     }
-    fetchTasks();
-  }, [user, filter]);
+  }, [user, authLoading, filter]);
+
+  if (authLoading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <Spinner size="large" />
+        </div>
+      </Layout>
+    );
+  }
+
+  //   useEffect(() => {
+  //     if (!user) {
+  //       router.push("/login");
+  //       return;
+  //     }
+  //     fetchTasks();
+  //   }, [user, filter]);
 
   const fetchTasks = async () => {
     try {
@@ -34,7 +55,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching tasks:", error);
     } finally {
-      setLoading(false);
+      setTasksLoading(false);
     }
   };
 
@@ -99,8 +120,11 @@ const Dashboard = () => {
           </div>
 
           {/* Task List */}
-          {loading ? (
-            <div className="text-center py-12">Loading tasks...</div>
+          {tasksLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Spinner size="large" />
+              <span className="ml-3 text-gray-600">Loading tasks...</span>
+            </div>
           ) : tasks.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow">
               <p className="text-gray-500">
